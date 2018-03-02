@@ -4,23 +4,20 @@ extension Droplet {
     func setupRoutes() throws {
         
         get("") { req in
-            return try self.view.make("myview")
+            return try self.view.make("myview", Node(node: ["name" : "Ade "]))
         }
         
-        get("who", "is") { req in
-            return "The Dopefaceee"
+        get("user", String.parameter) { req in
+            let nameId = try req.parameters.next(String.self)
+            return try self.view.make("myview", Node(node: ["name" : nameId]))
         }
+        
         
 //        get("user", Int.parameter) { req in
 //            let userId = try req.parameters.next(Int.self)
 //            return "You requested User #\(userId + 1)"
 //        }
         
-        get("testjson") { req in
-            return JSON(json: [
-                "message" : "Hello, Json"
-                ])
-        }
         
 //        get("post") { req in
 //            guard let name = req.data["name"]?.string else {
@@ -30,6 +27,16 @@ extension Droplet {
 //                "message": "Hello, \(name)!"
 //                ])
 //        }
+        
+        get("who", "is") { req in
+            return "The Dopefaceee"
+        }
+        
+        get("testjson") { req in
+            return JSON(json: [
+                "message" : "Hello, Json"
+                ])
+        }
         
         get("hello") { req in
             var json = JSON()
