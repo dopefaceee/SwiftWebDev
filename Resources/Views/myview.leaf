@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang= "en">
-<head>
-<title>Dopefaceee Webpage</title>
-</head>
-<body>
+#extend("master")
+
+#export("head") {
+    #embed("title")
+}
+
+#export("body") {
     <h1> My First Web using Swift </h1>
     <h3> Hello, #(name)!</h3>
-</body>
-</html>
+}
+

@@ -1,4 +1,5 @@
 import App
+import PostgreSQLDriver
 
 /// We have isolated all of our App's logic into
 /// the App module because it makes our app
@@ -20,6 +21,7 @@ let config = try Config()
 try config.setup()
 
 let drop = try Droplet(config)
+
 try drop.setup()
 
 try drop.run()
