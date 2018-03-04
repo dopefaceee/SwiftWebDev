@@ -120,7 +120,16 @@ extension Droplet {
             return try first.makeJSON()
         }
         
-        
+        delete("delete", Int.parameter) { req in
+            let acroId = try req.parameters.next(Int.self)
+            
+            guard let acro = try Acronym.find(acroId) else {
+                throw Abort(.badRequest, reason: "acronym with id \(acroId) does not exist")
+            }
+            
+            try acro.delete()
+            return try JSON(node: ["type" : "success", "message" : "acronym with id \(acroId) were successfully deleted"])
+        }
         
         
         
