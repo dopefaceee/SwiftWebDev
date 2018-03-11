@@ -2,7 +2,12 @@ import Vapor
 import PostgreSQLProvider
 
 extension Droplet {
+    
     func setupRoutes() throws {
+        
+        //MARK: - Skeleteon
+       
+
         
         //MARK: - Test Routes
         
@@ -130,6 +135,11 @@ extension Droplet {
             try acro.delete()
             return try JSON(node: ["type" : "success", "message" : "acronym with id \(acroId) were successfully deleted"])
         }
+        
+        
+        let til = TILController(drop: self)
+        //get("til", handler: til.indexView)
+        til.addRoutes(drop: self)
         
         
         

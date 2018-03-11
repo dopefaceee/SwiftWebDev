@@ -10,6 +10,7 @@ extension Config {
 
         try setupProviders()
         try setupPreparations()
+        
     }
     
     /// Configure providers

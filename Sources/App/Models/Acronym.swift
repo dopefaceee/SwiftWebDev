@@ -8,6 +8,8 @@
 import Foundation
 import Vapor
 import PostgreSQLProvider
+import Node
+import FluentProvider
 
 final class Acronym : Model {
     
@@ -39,27 +41,14 @@ final class Acronym : Model {
         self.long = long
     }
     
-//    //using NodeRepresentable, JSONRepresentable protocol
-//    func makeJSON() throws -> JSON {
-//        return try JSON(node: [
-//            "id" : id as Any,
-//            "short" : short,
-//            "long" : long
-//            ])
-//    }
-
-    func makeNode(in context: Context) throws -> Node {
-        return try Node(node: [
-            "id" : id as Any,
-            "short" : short,
-            "long" : long
-            ])
-    }
     
 }
 
-extension Acronym : Preparation {
+extension Acronym: ResponseRepresentable { }
+
+extension Acronym: JSONConvertible, NodeRepresentable, Preparation {
     
+    //MARK: - Preparation
     static func prepare(_ database: Database) throws {
         try database.create(self, closure: { acro in
             acro.id()
@@ -72,15 +61,18 @@ extension Acronym : Preparation {
         try database.delete(self)
     }
     
-}
-
-extension Acronym: JSONConvertible {
-    
     // let you initiate user with json
     convenience init(json: JSON) throws {
         self.init(
             short: try json.get(Acronym.shortKey),
             long: try json.get(Acronym.longkey)
+        )
+    }
+    
+    convenience init(node: Node) throws {
+        self.init(
+        short: try node.get(Acronym.shortKey),
+        long: try node.get(Acronym.longkey)
         )
     }
     
@@ -92,6 +84,15 @@ extension Acronym: JSONConvertible {
         try json.set(Acronym.longkey, long)
         return json
     }
+    
+    func makeNode(in context: Context) throws -> Node {
+        var node = Node(context)
+        try node.set(Acronym.shortKey, short)
+        try node.set(Acronym.longkey, long)
+        return node
+    }
+    
+    
 }
 
 
