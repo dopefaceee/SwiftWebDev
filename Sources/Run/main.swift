@@ -1,5 +1,6 @@
 import App
 import PostgreSQLDriver
+import LeafProvider
 
 /// We have isolated all of our App's logic into
 /// the App module because it makes our app
@@ -21,6 +22,8 @@ let config = try Config()
 try config.setup()
 
 let drop = try Droplet(config)
+
+(drop.view as? LeafRenderer)?.stem.cache = nil
 
 try drop.setup()
 

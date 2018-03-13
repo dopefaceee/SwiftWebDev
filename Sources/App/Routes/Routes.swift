@@ -138,7 +138,6 @@ extension Droplet {
         
         
         let til = TILController(drop: self)
-        //get("til", handler: til.indexView)
         til.addRoutes(drop: self)
         
         
